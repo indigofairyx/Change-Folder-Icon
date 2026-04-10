@@ -1,0 +1,308 @@
+﻿Changelog Symbols Key: + NEW|ADDED, - REMOVED, ! FIXED, * CHANGED, # TODO, $ ISSUE|BROKEN
+
+# on the dev's wishlist still ...
+- [ ] Re-work SetIconToWholeFolderTree() to backup exisiting desktop.ini's at the moment they Recycled and replaced
+- [ ] allow editing existing desktop.ini files directly in the app from the edit field?
+- [ ] fix DPI scaling on buttons that i have icons. built on 4k+125% scaling, at 100% theyre off center
+- [ ] add errorlevel and leading "\" backslash to loading relative path icons, 10% time theyre seen but not loaded until hitting the preview.ico button
+- [ ] create readme.md documentation as this pet project has grown a lot more than i anticipated.
+- [ ] integrate the apps bar into the context menu ?
+- [ ] Clean up duplicate entries in tray menu from envclass() and local static items.
+- [ ] log all changes made the the app to a local text file (in addition the history's menu)
+
+;------------------------- v.2026.04.10
+
+>[!IMPORTANT]
+> ***BREAKING CHANGES!*** The File Name and Path Has Changed!
+> ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+> For users whom passing parama's through any CLI you should update your scripts\buttons.
+> Old Name = .\Change Folder ICO\Change Folder ICO.exe
+> NEW NAME = .\ChangeFolderIcon\ChangeFolderIcon.exe
+>
+> ***Addiontally*** The Name of the Settings.ini has Changed
+> ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+> There's a few new items in the [programs] sections. otherwise this exe will make a new .ini file. to keep your settings you can manually copy over the sections from you old file.
+> Old Name = .\Change Folder ICO.%ext%-SETTINGS.ini
+> NEW NAME = .\ChangeFolderIcon.ini
+
+!*- AI:Slop Code Clean Up!
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+- Completely removed the make shift "installer". The app is still portable as it was before, download the zip, place anywhere that's not in a system directory, uncompress and run it from the folder it was zipped in. Simple. - also removed 1st run MsgBox.
+
+!* desktop.ini files are no longer deleted and re-created. The changed icon values are updated directly.
++ Additionally... the existing data in a exising desktop.ini file is now copied & back up to its own section
+    eg, [.OLD.ShellClassInfo-Timestamp] = [.OLD.ShellClassInfo-20260330110152].
+
+    **Note** There is no "Undo" in this app but now you can manually revert changes via delete the active [.ShellClassInfo] heading while rename the backed up section to match active active heading.
+
+++ added a CleanUP button that will delete the sections starting ".OLD." from the active desktop.ini should you want to remove the backup history from the file.
+
+   #Todo NOTE! Setting or removing an icon to an entire directory tree has *NOT been re-worked yet!* This will still recycle and\or replace all desktop.ini's in the given folder tree.
+
+
+
++!* Gui Improvements
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+!* edit fields and the gui are now re-sizable on the width axis.
++ Added Font= to [Settings], the default is Consolas, mono-spaced. $ gui buttons have been tweaked for custom fonts thou newline clipping my occur with larger fonts.
+! improved DarkMode support on edit inputs boxes, scroll bar are now dark in darkmod
++ improved\added a function to save window position when moved rather than just saving it when closed.
+* converted hidden pictures for active desktop.ini options to disabled\enabled buttons
+
++!* MENU Improvements
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+* Separated the bulked History Menu into individual Folder && Icons Menus respectively
++ The Numumber is history items to remember is now definable in the ini through [Settings]>History_NumberOfItemsToRemember=30 . The hardcoded app default is 30. you can adjust up\down here.
++ added [Settings]>MenuIconSize=24. This will allow you change the icon size (in Pixels) on the menus, windows default to 16 or 20 px depending on dpi scalling.
+* Improved icon rendering for scaled icons larger than windows defaults
++ added a live folder menu button that will place the selected file into the iconpath for quick .\relative\paths assignments. This live folder menu only shows applicable extensions which are .ico, .exe, .dll, and .icl. Its also shows .ini files as clicking a desktop.ini file will open it so you can edit it directly in a text edtior.
+*+ cleaned-up and added logic improvements to the right-click context menu
++ added sub-menus to the context menu for the system tray, settings, and live hotkeys menus.
+! Fixed an error for "Open Current Icon Path" menu item opening to wrong folder
+! improved\fixed loading previews from relative sources
++ the tray menu now contains more options that are __Class spill overs from my other software project. $ (possible bugs) some new tray menu items might not work without the required ahk script file they're calling. however these should, hopefully, remain hidden to anyone but the dev.
+
++!* 3rd Party App Support
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
++ added support for Dopus Image Viewer to the apps bar.
++ added support for [QuickLook](https://github.com/QL-Win/QuickLook) to the apps bar
++ added support for [FolderCreator $](https://foldercreator.com) to the apps bar. $ this is Paid program but a fun one for graphic enthusiasts.
+
++# add\ing support for a couple freeware extraction program for grabbing icons out of exe,dll,icl files. eg, IconExt and IconExplorer *(they're old looking but work great)
+    IconsExt=X:\PFP\SysUtils\NirSoft\iconsext.exe
+    IconsExtLink=https://www.nirsoft.net/utils/iconsext.html
+    IconExplorer=X:\PFP\SysUtils\MiTeC\IconExplorer.exe
+    IconExplorerlink=https://www.mitec.cz/iconex.html
+
++ Added a menu item for dopus users which will copy the xml.dcf to your clipboard for quick and easy pasting on toolbars\menus.
+
++!* Other Changes
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+-* (partly) Removed the limitation for only saving .ico file through the iconpath edit field, **it now always saving .exe's as an icon.** $$ there might a couple lingering bugs from this change.
+    ~~$# still have not implated a iconindex override here. if you use an .exe path it will default to `,0 for the icon number. ** you can use the Edit Desktop.ini button\menu item to make manual overrides.~~
++ added Support for picking a icon index # via Windows "Change Icon" dialog box for .exe, .dll and .icl files
+
++ added checkbox options to the gui to - [ ] Copy .ico to Dest && - [ ] Hide Copied .ico. This is limited to .ico files, it will copy the file to the folder you're setting it, set the icon as relative then hide the icon if the 2nd is checked.
++ added [Settings]>OnStartUp_AutoLoadLastFolder=0 , 0=off (by default) starts with and empty gui, 1=Restores the last folder that was in the Folder when exiting the app
+
++ OnExit Func() to delete C:\Users\glitch\AppData\Local\Temp\~iconpreview.ico|.png and clear allocated memory from previewing icons
+
+! Toggling between Light<>Dark Modes forces the app to reload, it now automatically remembers and reloads the active folderpath.
+
++ Added description\comments above most settings in the ChangeFolderIcon.ini
+
+! Fix errors that remove trailing "\" backslash from folderpath field
+;---------------------------------------------------------------------------
+
++++ You Can Assign Icons to Hard Drives!
+‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
++ Added Options for Setting Icons to Hard Drives!! A button has been added that will show a menu of Fixed & Removable HDDs\SDDs on your system. Select the drive from drop down and pick an .ico file ONLY.
+
+$$ This requires that the app be running as Admin. See note below and\or in the menu.
+
+>[!IMPORTANT]
+> - Considerations when Setting an Icon to Hard Drive -
+>
+> To Set Drive Icons the app needs to be running as Admin.
+>
+> To set an icon to a Drive the .ico file *MUST* be local on the drive. Thus this Operation will **Copy** the icon and create a autorun.inf file to the root of the chosen drive. eg, C:\autorun.inf & C:\Your Icon.ico - (Which Requires Admin Access). Some External drive do not requre admin access, the app will try to Copy & Create the files first, if it can't it will as you if you want to run as admin.
+>
+> Re-Booting your system is required before the icon will be seen by Windows. *NOTE* Some Windows 11 PCs running a NPU might ignore the custom icon, because Windows is a pain like that.
+>
+> Additionally, Should you want to manually revert this later the autorun.inf and copied icon will require Admin elevation to deleted. From the C:\ drive at least. again, some external drive will do so without elevation.
+>
+> You've been informed!
+>
+> On a side note I, the dev, have 8+ HDDs\SDDs in my system and have set custom icons to each one without issue. Plus a bunch of external drives as well.
+
+
+;------------------------- v.2025.10.01
+
+! Fixed an Error where paramaters being sent by dopus were causing errors when sent with quotes
+
+* Code Cleaned up & condensed. There's now only on gui shareing both dark & light mode settings.
+
+;------------------------- v.2025.09.30
+
+++ added the ability to send a directory to the script as a parameter without messing with your clipboard!
+    ++* this is great option for Dopus users! if you have a button that lauches the program via dopus you can update the cmd, remove **Clipboard COPYNAMES=unc** line and replace it this single line... ***@async:"X:\the path to\Change Folder ICO\Change Folder ICO.exe" {filepath}***
+
+    [!NOTE!] The *AutoCheckClipboardOnStart* is still an option as it is very handy.
+
+! Fixed\Updated support for Everything 1.5a as they've change their file names in recent updates.
+
+*+ The GUI now automatically reloads when changing bewtween Light & Dark Modes
+
+;------------------------- v.2025.09.28
+
+! Fixed Custom IconError= Icon not being seen when set in the .ini
+
+;------------------------- v.2025.05.31
+
+++ Added drag-and-drop capability to the gui! .ico files will automatically be loaded into the icon path field. folders ( or any other file that's not an ico ) will be split at the last Directory and loaded into the folder field.
+
+    [!NOTE!] Drag-n-Drop only works on the Compiled Change Folder Ico.exe, it's a limiation of AHK that this will not work when running from an .ahk file.
+
+! fixed copy Folder & Icons paths options on the GUI Right-Click menu
+
++ added quick actions & Hotkeys as a sub-menu to the GUI Right-Click menu
+
++! added an option to **Delete All** desktop.ini's in folder tree. this should only be use if you used this app to apply the same icons to all subfolders in a folder tree
+
+
+;------------------------- v.2025.04.22
+
++ added a right-click context menu to gui.
+
+! fixed an error accessing MSpaint.exe between win 10 & win 11
+
+! changed\fixed some windows.dll icons on to gui to local so they'd between windows versions
+
+! fixed setting the wrong workingDir that was creating the ini and changelog file in its parentDir
+
+* changed the Start Pinned to top checkbox to an Icon
+
+;------------------------- v.2025.03.27
+
+* GUI Updates...
+*+ added icons to all GUI buttons, because... ICONS!
+* changed all buttons to darkmode.
++ added light mode theme
+! improved tooltip handling so that they don't pause the program
+
+NOTE! This is the Last Release!
+
+Unless anyone reports bug issues. There's likely a few small ones.
+Thou...
+I've been using this and am content with it.
+I'll be uploading the source code and required icons to github soon.
+Y'all can have some fun tweaking it if you wish.
+
+
+;------------------------- v.2025.03.23
+
+** changed app icon to the new win11 fluent style
+!* adjusted searching icons with everything to only send the icon name rather then the full path, and removed the "quotes" it was sending around search terms
++ added a hotkey to send icon searches to everything
+! fixed reload hotkey conflict that was causing it not to show up in live menu and buttons
+
+
+;------------------------- v.2025.03.20
+
+* gui layout tweaks
++ added dynamic hotkeys labels to buttons
+! fixed window position incorrectly being written to .ini
+!+ fixed and added saving window position on a Reload, it only saved on Exit before
+
+* Cleaned up dynamic menus a bit...
++ increased the folder & icon history to 30 items from 15
++ added modifier + click functionality History menu with labels where they apply.
++ added the ability to delete individual items from the history if the menu starts to get to large without erasing the entire history. Hold ctrl+shift and click to delete a single item.
++ added Friendly\Readable Menu names to the items on the Quick Actions & Live Hotkeys Menu
+
+
+;------------------------- v.2025.03.15
+
++ added Everything1.5a, https://www.voidtools.com/forum/viewtopic.php?t=9787, integration to the apps bar. it will send any search text or an .ico path to Everything with extension file filter in place for searching .ico's on your C: drive, e.g. ext:ico c: folder icon
+
++ started and included this changelog
+
+! improvements to saving folder & icon history when update the ini file
+
+
+;------------------------- v2025.03.11
+
+added the ability to click and drag on the gui to move it
+
+! important ! FIX - Removed an accidentally left behind hotkey, NumbadSub that was being used for testing
+
+Fixed\Improved file versioning checks for proper updates when a new version\installer is run from within or at the parent level dir
+
+To update, run this inside the folder an existing install.
+
+updated github in app menu
+
+fixed minor menu error
+
+fixed typo in start menu link
+
+;------------------------- v2025.03.10
+
+1st Release
+
+Download Portable Installer, it will copy itself into its own directory with some icons and a settings.ini
+
+No system changes are made.
+
+;------------------------- v.2025.03.27
+
+* GUI Updates...
+*+ added icons to all GUI buttons, because... ICONS!
+* changed all buttons darkmode.
++ added light mode theme
+! improved tooltip handling so that they don't pause the program
+
+NOTE! This is the Last Release!
+
+Unless anyone reports bug issues. There's likely a few small ones.
+Thou...
+I've been using this and am content with it.
+I'll be uploading the source code and assistes to github soon.
+Y'all can have some fun tweaking it if you wish.
+
+
+;------------------------- v.2025.03.23
+
+** changed app icon to the new win11 fluent style
+!* adjusted searching icons with everything to only send the icon name rather then the full path, and removed the "quotes" it was sending around search terms
++ added a hotkey to send icon searches to everything
+! fixed reload hotkey conflict that was causing it not to show up in live menu and buttons
+
+
+;------------------------- v.2025.03.20
+
+* gui layout tweaks
++ added dynamic hotkeys labels to buttons
+! fixed window position incorrectly being written to .ini
+!+ fixed and added saving window position on a Reload, it only saved on Exit before
+
+* Cleaned up dynamic menus a bit...
++ increased the folder & icon history to 30 items from 15
++ added modifier + click functionality History menu with labels where they apply.
++ added the ability to delete individual items from the history if the menu starts to get to large without erasing the entire history. Hold ctrl+shift and click to delete a single item.
++ added Friendly\Readable Menu names to the items on the Quick Actions & Live Hotkeys Menu
+
+
+;------------------------- v.2025.03.15
+
++ added Everything1.5a, https://www.voidtools.com/forum/viewtopic.php?t=9787, integration to the apps bar. it will send any search text or an .ico path to Everything with extension file filter in place for searching .ico's on your C: drive, e.g. ext:ico c: folder icon
+
++ started and included this changelog
+
+! improvements to saving folder & icon history when update the ini file
+
+
+;------------------------- v2025.03.11
+
+added the ability to click and drag on the gui to move it
+
+! important ! FIX - Removed an accidentally left behind hotkey, NumbadSub that was being used for testing
+
+Fixed\Improved file versioning checks for proper updates when a new version\installer is run from within or at the parent level dir
+
+To update, run this inside the folder an existing install.
+
+updated github in app menu
+
+fixed minor menu error
+
+fixed typo in start menu link
+
+;------------------------- v2025.03.10
+
+1st Release
+
+Download Portable Installer, it will copy itself into its own directory with some icons and a settings.ini
+
+No system changes are made.
+
